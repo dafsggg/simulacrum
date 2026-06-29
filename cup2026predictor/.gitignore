@@ -1,0 +1,20 @@
+# 密钥与运行时状态（绝不入库）
+.deploy.env
+data/config.json
+data/odds.json
+data/locked_preds.json
+
+# 自动下载/生成的产物
+data/intl_results.csv
+web/data.js
+web/reports.js
+web/blurbs.js
+out/
+
+# 本地杂项
+__pycache__/
+*.pyc
+.DS_Store
+share/
+NOTES.md
+.claude/

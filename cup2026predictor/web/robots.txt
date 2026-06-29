@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cup2026predictor.com/sitemap.xml

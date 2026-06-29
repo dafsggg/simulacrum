@@ -1,0 +1,7 @@
+{
+  "book_home_bias": 0.5,
+  "book_upset_emphasis": 0.5,
+  "book_draw_emphasis": 0.5,
+  "book_strong_team_caution": 0.5,
+  "book_total_goals_calibration": 1.018
+}

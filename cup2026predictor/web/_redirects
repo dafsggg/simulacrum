@@ -1,0 +1,14 @@
+# 默认重定向到中文页面
+/    /zh/index.html  301
+
+# 各语言版本路径
+/zh  /zh/index.html  200
+/de  /de/index.html  200
+/es  /es/index.html  200
+/pt  /pt/index.html  200
+/ru  /ru/index.html  200
+/en  /index.html  200
+
+# 短路径重定向
+/home  /  301
+/predict  /zh/index.html  301

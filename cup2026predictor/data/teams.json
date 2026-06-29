@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "tournament": "2026 FIFA World Cup (USA / Canada / Mexico)",
+    "elo_source": "eloratings.net, snapshot 2026-06-11 (开赛日)",
+    "draw_source": "2025-12-05 官方抽签 + 2026-03 附加赛结果",
+    "hosts": ["MEX", "USA", "CAN"]
+  },
+  "teams": [
+    { "code": "MEX", "name_zh": "墨西哥", "name_en": "Mexico", "group": "A", "elo": 1875, "host": true },
+    { "code": "RSA", "name_zh": "南非", "name_en": "South Africa", "group": "A", "elo": 1517, "host": false },
+    { "code": "KOR", "name_zh": "韩国", "name_en": "South Korea", "group": "A", "elo": 1758, "host": false },
+    { "code": "CZE", "name_zh": "捷克", "name_en": "Czechia", "group": "A", "elo": 1740, "host": false },
+
+    { "code": "CAN", "name_zh": "加拿大", "name_en": "Canada", "group": "B", "elo": 1788, "host": true },
+    { "code": "BIH", "name_zh": "波黑", "name_en": "Bosnia and Herzegovina", "group": "B", "elo": 1595, "host": false },
+    { "code": "QAT", "name_zh": "卡塔尔", "name_en": "Qatar", "group": "B", "elo": 1421, "host": false },
+    { "code": "SUI", "name_zh": "瑞士", "name_en": "Switzerland", "group": "B", "elo": 1891, "host": false },
+
+    { "code": "BRA", "name_zh": "巴西", "name_en": "Brazil", "group": "C", "elo": 1991, "host": false },
+    { "code": "MAR", "name_zh": "摩洛哥", "name_en": "Morocco", "group": "C", "elo": 1827, "host": false },
+    { "code": "HAI", "name_zh": "海地", "name_en": "Haiti", "group": "C", "elo": 1548, "host": false },
+    { "code": "SCO", "name_zh": "苏格兰", "name_en": "Scotland", "group": "C", "elo": 1782, "host": false },
+
+    { "code": "USA", "name_zh": "美国", "name_en": "United States", "group": "D", "elo": 1726, "host": true },
+    { "code": "PAR", "name_zh": "巴拉圭", "name_en": "Paraguay", "group": "D", "elo": 1834, "host": false },
+    { "code": "AUS", "name_zh": "澳大利亚", "name_en": "Australia", "group": "D", "elo": 1777, "host": false },
+    { "code": "TUR", "name_zh": "土耳其", "name_en": "Türkiye", "group": "D", "elo": 1911, "host": false },
+
+    { "code": "GER", "name_zh": "德国", "name_en": "Germany", "group": "E", "elo": 1932, "host": false },
+    { "code": "CUW", "name_zh": "库拉索", "name_en": "Curaçao", "group": "E", "elo": 1434, "host": false },
+    { "code": "CIV", "name_zh": "科特迪瓦", "name_en": "Ivory Coast", "group": "E", "elo": 1695, "host": false },
+    { "code": "ECU", "name_zh": "厄瓜多尔", "name_en": "Ecuador", "group": "E", "elo": 1938, "host": false },
+
+    { "code": "NED", "name_zh": "荷兰", "name_en": "Netherlands", "group": "F", "elo": 1948, "host": false },
+    { "code": "JPN", "name_zh": "日本", "name_en": "Japan", "group": "F", "elo": 1906, "host": false },
+    { "code": "SWE", "name_zh": "瑞典", "name_en": "Sweden", "group": "F", "elo": 1712, "host": false },
+    { "code": "TUN", "name_zh": "突尼斯", "name_en": "Tunisia", "group": "F", "elo": 1628, "host": false },
+
+    { "code": "BEL", "name_zh": "比利时", "name_en": "Belgium", "group": "G", "elo": 1894, "host": false },
+    { "code": "EGY", "name_zh": "埃及", "name_en": "Egypt", "group": "G", "elo": 1696, "host": false },
+    { "code": "IRN", "name_zh": "伊朗", "name_en": "Iran", "group": "G", "elo": 1772, "host": false },
+    { "code": "NZL", "name_zh": "新西兰", "name_en": "New Zealand", "group": "G", "elo": 1562, "host": false },
+
+    { "code": "ESP", "name_zh": "西班牙", "name_en": "Spain", "group": "H", "elo": 2157, "host": false },
+    { "code": "CPV", "name_zh": "佛得角", "name_en": "Cape Verde", "group": "H", "elo": 1578, "host": false },
+    { "code": "KSA", "name_zh": "沙特阿拉伯", "name_en": "Saudi Arabia", "group": "H", "elo": 1576, "host": false },
+    { "code": "URU", "name_zh": "乌拉圭", "name_en": "Uruguay", "group": "H", "elo": 1892, "host": false },
+
+    { "code": "FRA", "name_zh": "法国", "name_en": "France", "group": "I", "elo": 2063, "host": false },
+    { "code": "SEN", "name_zh": "塞内加尔", "name_en": "Senegal", "group": "I", "elo": 1860, "host": false },
+    { "code": "IRQ", "name_zh": "伊拉克", "name_en": "Iraq", "group": "I", "elo": 1607, "host": false },
+    { "code": "NOR", "name_zh": "挪威", "name_en": "Norway", "group": "I", "elo": 1914, "host": false },
+
+    { "code": "ARG", "name_zh": "阿根廷", "name_en": "Argentina", "group": "J", "elo": 2115, "host": false },
+    { "code": "ALG", "name_zh": "阿尔及利亚", "name_en": "Algeria", "group": "J", "elo": 1772, "host": false },
+    { "code": "AUT", "name_zh": "奥地利", "name_en": "Austria", "group": "J", "elo": 1830, "host": false },
+    { "code": "JOR", "name_zh": "约旦", "name_en": "Jordan", "group": "J", "elo": 1680, "host": false },
+
+    { "code": "POR", "name_zh": "葡萄牙", "name_en": "Portugal", "group": "K", "elo": 1989, "host": false },
+    { "code": "COD", "name_zh": "刚果(金)", "name_en": "DR Congo", "group": "K", "elo": 1652, "host": false },
+    { "code": "UZB", "name_zh": "乌兹别克斯坦", "name_en": "Uzbekistan", "group": "K", "elo": 1714, "host": false },
+    { "code": "COL", "name_zh": "哥伦比亚", "name_en": "Colombia", "group": "K", "elo": 1982, "host": false },
+
+    { "code": "ENG", "name_zh": "英格兰", "name_en": "England", "group": "L", "elo": 2024, "host": false },
+    { "code": "CRO", "name_zh": "克罗地亚", "name_en": "Croatia", "group": "L", "elo": 1912, "host": false },
+    { "code": "GHA", "name_zh": "加纳", "name_en": "Ghana", "group": "L", "elo": 1510, "host": false },
+    { "code": "PAN", "name_zh": "巴拿马", "name_en": "Panama", "group": "L", "elo": 1730, "host": false }
+  ]
+}

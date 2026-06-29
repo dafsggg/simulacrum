@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+*.spec
+
+# Virtual Environment
+venv/
+env/
+.venv/
+.env/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Data files (generated)
+cup2026predictor/data/odds.json
+cup2026predictor/data/played_preds.json
+cup2026predictor/data/locked_preds.json
+cup2026predictor/out/
+
+# PyInstaller
+cup2026predictor/build/
+cup2026predictor/dist/
+cup2026predictor/*.spec
+
+# Wrangler / Cloudflare
+.wrangler/
+node_modules/
+
+# Vercel
+.vercel/
+
+# Knowledge base (large files)
+cup2026predictor/knowledge/*.epub
+cup2026predictor/knowledge/*.docx
+cup2026predictor/knowledge/*.pdf

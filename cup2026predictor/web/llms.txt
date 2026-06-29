@@ -1,0 +1,22 @@
+# AI World Cup Predictions 2026
+
+AI World Cup Predictions 2026 is an interactive static predictor for the 2026 FIFA World Cup at https://cup2026predictor.com/.
+
+## Language routes
+
+- English: https://cup2026predictor.com/
+- German: https://cup2026predictor.com/de/
+- Spanish: https://cup2026predictor.com/es/
+- Portuguese: https://cup2026predictor.com/pt/
+- Russian: https://cup2026predictor.com/ru/
+- Chinese: https://cup2026predictor.com/zh/
+
+## What the site provides
+
+- Live champion probabilities for all 48 teams.
+- Match-by-match score forecasts and schedule filters.
+- Group qualification outlooks.
+- AI reports and pre-match prediction record tracking.
+- Sitemap with hreflang alternates: https://cup2026predictor.com/sitemap.xml
+
+Predictions are for entertainment and research only, not betting advice.
