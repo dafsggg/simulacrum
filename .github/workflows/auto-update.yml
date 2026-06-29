@@ -5,6 +5,9 @@ on:
     - cron: '0 2 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -12,7 +15,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+        with:
+          fetch-depth: 0
+          
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -21,12 +26,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install beautifulsoup4
+          pip install beautifulsoup4 lxml
           
       - name: Run prediction update
         run: |
           cd cup2026predictor
-          python -m src.update --sims 300000 --no-parallel
+          python -m src.update --sims 300000 --workers 1
           
       - name: Commit and push if changes
         run: |
@@ -34,8 +39,6 @@ jobs:
           git config --local user.name "GitHub Action"
           git add -A
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update predictions $(date +'%Y-%m-%d %H:%M')" && git push)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
