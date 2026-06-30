@@ -1234,8 +1234,11 @@
   "away": "CAN",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   0,
+   1
+  ],
+  "winner": "CAN"
  },
  {
   "match": 74,
@@ -1248,8 +1251,11 @@
   "away": "PAR",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   1,
+   1
+  ],
+  "winner": "PAR"
  },
  {
   "match": 75,
@@ -1262,8 +1268,11 @@
   "away": "MAR",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   1,
+   1
+  ],
+  "winner": "MAR"
  },
  {
   "match": 76,
@@ -1276,8 +1285,11 @@
   "away": "JPN",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   2,
+   1
+  ],
+  "winner": "BRA"
  },
  {
   "match": 77,
@@ -1454,7 +1466,7 @@
   "group": null,
   "date_utc": "2026-07-04 21:00:00Z",
   "venue": "Philadelphia Stadium",
-  "home": null,
+  "home": "PAR",
   "away": null,
   "slot_home": null,
   "slot_away": null,
@@ -1468,8 +1480,8 @@
   "group": null,
   "date_utc": "2026-07-04 17:00:00Z",
   "venue": "Houston Stadium",
-  "home": null,
-  "away": null,
+  "home": "CAN",
+  "away": "MAR",
   "slot_home": null,
   "slot_away": null,
   "score": null,
@@ -1482,7 +1494,7 @@
   "group": null,
   "date_utc": "2026-07-05 20:00:00Z",
   "venue": "New York/New Jersey Stadium",
-  "home": null,
+  "home": "BRA",
   "away": null,
   "slot_home": null,
   "slot_away": null,
