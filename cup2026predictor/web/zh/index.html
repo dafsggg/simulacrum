@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
@@ -567,24 +567,6 @@
     animation: spin .7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   
-  /* ---- 更新预测按钮 ---- */
-  .update-btn { position: fixed; right: 70px; bottom: 20px; z-index: 20;
-    display: flex; align-items: center; gap: 8px;
-    padding: 10px 18px;
-    color: var(--bg); background: var(--green); border: none; border-radius: 30px;
-    font-family: var(--mono); font-size: 13px; font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(0,0,0,.4), 0 0 0 1px rgba(24,228,141,.2);
-    transition: all .2s; letter-spacing: .05em; }
-  .update-btn:hover { background: var(--gold); transform: translateY(-2px);
-    box-shadow: 0 6px 26px rgba(0,0,0,.5), 0 0 0 1px rgba(255,215,94,.3); }
-  .update-btn:active { transform: translateY(0); }
-  .update-btn svg { width: 18px; height: 18px; }
-  .update-btn.busy svg { display: none; }
-  .update-btn.busy::after { content: ""; width: 16px; height: 16px; border-radius: 50%;
-    border: 2.5px solid rgba(7,16,11,.25); border-top-color: var(--bg);
-    animation: spin .7s linear infinite; }
-
   @media (max-width: 1100px) {
     .side-poster { display: none; }
     .wrap { max-width: 100%; padding: 0 28px 120px; }
@@ -751,15 +733,6 @@
     <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
     <line x1="8.6" y1="10.6" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.4" x2="15.4" y2="17.5"/>
   </svg>
-</button>
-
-<button class="update-btn" id="update-btn" title="重新运行30万次模拟预测最新5场未赛比赛" onclick="window.updatePredictions && window.updatePredictions()">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="23 4 23 10 17 10"></polyline>
-    <polyline points="1 20 1 14 7 14"></polyline>
-    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-  </svg>
-  <span>更新预测</span>
 </button>
 
 <script src="../data.js"></script>
