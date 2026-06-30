@@ -587,31 +587,136 @@
     .year-bg { right: -20px; }
   }
   @media (max-width: 520px) {
-    .wrap { padding: 0 16px 96px; }
-    nav { margin: 20px -16px 28px; padding: 0 16px; }
-    .nav-btn { padding: 13px 10px; font-size: 12px; letter-spacing: .06em; }
-    header { padding: 42px 0 14px; }
-    .kicker { font-size: 10px; letter-spacing: .2em; }
-    .sub { font-size: 13px; }
-    .chip { font-size: 11px; padding: 6px 10px; }
-    .year-bg { font-size: 110px; top: -4px; right: -12px; }
-    .podium-pct { font-size: 42px; }
-    .row { grid-template-columns: 22px 108px 1fr 54px; gap: 7px; }
-    .row .elo, .row .tag { display: none; }
-    .row .nm { font-size: 13px; }
-    .row .pct { font-size: 12px; }
-    .funnel { padding: 6px 10px 14px; gap: 6px; }
-    .m-teams { grid-template-columns: 1fr 52px 1fr; }
-    .m-side { font-size: 13px; gap: 6px; }
-    .m-side .flag { font-size: 16px; }
-    .m-mid .sc { font-size: 17px; }
-    .stat-tiles { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .stile .sv { font-size: 30px; }
-    .gcard { padding: 14px 14px 10px; }
-    .fmatch { padding: 12px 14px; }
-    .fmatch .side { font-size: 14px; }
-    .heat { font-size: 9px; }
-    .share-btn { right: 14px; bottom: calc(14px + env(safe-area-inset-bottom)); width: 38px; height: 38px; }
+    .wrap { padding: 0 12px 100px; }
+    
+    /* ---- 移动端导航优化 ---- */
+    nav {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      transform: none;
+      justify-content: center;
+      padding: 8px 12px;
+      background: rgba(10, 14, 10, .95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      z-index: 100;
+      margin: 0;
+      border-radius: 0;
+    }
+    .nav-inner {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 2px 0;
+    }
+    .nav-inner::-webkit-scrollbar { display: none; }
+    .nav-btn {
+      flex-shrink: 0;
+      padding: 8px 14px;
+      font-size: 12px;
+      letter-spacing: .04em;
+      border-radius: 20px;
+      min-width: auto;
+      white-space: nowrap;
+    }
+    .nav-btn.active {
+      background: var(--green);
+      color: var(--bg);
+      font-weight: 600;
+    }
+    
+    header { padding: 16px 0 12px; }
+    .kicker { font-size: 10px; letter-spacing: .15em; }
+    .sub { font-size: 12px; line-height: 1.6; }
+    .chip { font-size: 10px; padding: 5px 8px; }
+    .meta-chips { gap: 6px; margin-top: 12px; }
+    .year-bg { font-size: 90px; top: -2px; right: -8px; }
+    .podium-pct { font-size: 36px; }
+    
+    /* ---- 移动端赛程卡片优化 ---- */
+    .mcard {
+      padding: 14px 12px;
+      gap: 10px;
+    }
+    .m-when {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--dim);
+    }
+    .m-when .tm {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--green);
+      font-family: var(--mono);
+    }
+    .m-teams {
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+    .m-side {
+      font-size: 14px;
+      gap: 6px;
+    }
+    .m-side .flag {
+      font-size: 20px;
+    }
+    .m-side .nm {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .m-mid .sc {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .m-mid .vs {
+      font-size: 13px;
+      letter-spacing: .15em;
+    }
+    .obar {
+      height: 8px;
+      margin: 6px 0;
+    }
+    .m-pred {
+      font-size: 11px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--line);
+    }
+    .pred-line {
+      font-size: 11px;
+      gap: 4px;
+    }
+    .hit-badges {
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .hit {
+      font-size: 10px;
+      padding: 2px 6px;
+    }
+    
+    .stat-tiles { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .stile { padding: 14px 12px; }
+    .stile .sv { font-size: 28px; }
+    .gcard { padding: 12px; }
+    .fmatch { padding: 10px 12px; gap: 8px; }
+    .fmatch .side { font-size: 13px; }
+    .heat { font-size: 8px; }
+    
+    /* ---- 分享按钮 ---- */
+    .share-btn {
+      right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+      width: 40px;
+      height: 40px;
+    }
   }
 </style>
 </head>
