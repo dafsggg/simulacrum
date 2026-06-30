@@ -38,7 +38,10 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update predictions $(date +'%Y-%m-%d %H:%M')" && git push)
+          if ! git diff --quiet || ! git diff --staged --quiet; then
+            git commit -m "Auto update predictions $(date +'%Y-%m-%d %H:%M')" || true
+            git push || echo "Push skipped (no changes or remote rejection)"
+          fi
           
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
