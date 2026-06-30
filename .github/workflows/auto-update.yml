@@ -43,6 +43,20 @@ jobs:
             git push || echo "Push skipped (no changes or remote rejection)"
           fi
           
+      - name: Check Cloudflare deployment
+        run: |
+          echo "Checking Cloudflare deployment configuration..."
+          if [ -z "${{ secrets.CLOUDFLARE_API_TOKEN }}" ]; then
+            echo "::warning::CLOUDFLARE_API_TOKEN is not set"
+          else
+            echo "CLOUDFLARE_API_TOKEN is configured"
+          fi
+          if [ -z "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}" ]; then
+            echo "::warning::CLOUDFLARE_ACCOUNT_ID is not set"
+          else
+            echo "CLOUDFLARE_ACCOUNT_ID is configured"
+          fi
+          
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
@@ -50,3 +64,5 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: simulacrum
           directory: cup2026predictor/web
+        timeout-minutes: 10
+        continue-on-error: true
