@@ -1,97 +1,37 @@
 /**
  * Cloudflare Pages Function - 触发 GitHub Actions 更新预测
  * 
- * 使用方法：
- * POST /api/refresh
- * Headers: Authorization: Bearer YOUR_SECRET_TOKEN
+ * 这个 API 不需要任何认证，直接返回 GitHub Actions 触发链接
  */
 
 export async function onRequestPost(context) {
-  const { request, env } = context;
-  
-  // 验证 Secret Token
-  const authHeader = request.headers.get('Authorization');
-  const expectedToken = env.UPDATE_TOKEN;
-  
-  if (!expectedToken) {
-    return new Response('UPDATE_TOKEN not configured', { status: 500 });
-  }
-  
-  if (!authHeader || authHeader !== `Bearer ${expectedToken}`) {
-    return new Response('Unauthorized', { 
-      status: 401,
-      headers: { 'Content-Type': 'text/plain' }
-    });
-  }
-  
-  // 触发 GitHub Actions workflow
-  const owner = 'dafsggg';
-  const repo = 'simulacrum';
-  const workflowId = 'auto-update.yml';
-  
-  try {
-    const githubResponse = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflowId}/runs`,
-      {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
-          'X-GitHub-Api-Version': '2022-11-28'
-        },
-        body: JSON.stringify({
-          ref: 'main'
-        })
-      }
-    );
-    
-    if (!githubResponse.ok) {
-      const errorData = await githubResponse.json();
-      console.error('GitHub API error:', errorData);
-      return new Response(JSON.stringify({
-        status: 'error',
-        message: 'Failed to trigger GitHub Actions',
-        details: errorData.message
-      }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      });
+  return new Response(JSON.stringify({
+    status: 'manual_trigger_required',
+    message: 'Please trigger the update on GitHub',
+    trigger_url: 'https://github.com/dafsggg/simulacrum/actions/workflows/auto-update.yml',
+    instructions: [
+      '1. 点击上面的链接打开 GitHub Actions 页面',
+      '2. 点击 "Run workflow" 按钮',
+      '3. 点击绿色的 "Run workflow" 确认',
+      '4. 等待 10-15 分钟完成更新',
+      '5. 本页会自动检测更新完成并刷新'
+    ]
+  }), {
+    headers: { 
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
     }
-    
-    const data = await githubResponse.json();
-    
-    return new Response(JSON.stringify({
-      status: 'success',
-      message: 'Update started. This may take 10-15 minutes.',
-      run_id: data.id,
-      check_url: `https://github.com/${owner}/${repo}/actions/runs/${data.id}`
-    }), {
-      headers: { 'Content-Type': 'application/json' }
-    });
-    
-  } catch (error) {
-    console.error('Error triggering update:', error);
-    return new Response(JSON.stringify({
-      status: 'error',
-      message: 'Failed to trigger update',
-      error: error.message
-    }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
+  });
 }
 
 export async function onRequest(context) {
-  const { request } = context;
-  
   return new Response(JSON.stringify({
     service: 'World Cup Predictor Update API',
-    version: '1.0.0',
-    endpoints: {
-      POST: '/api/refresh - Trigger prediction update (requires AUTH_TOKEN)'
-    }
+    message: 'POST to /api/refresh to get update instructions'
   }), {
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
   });
 }

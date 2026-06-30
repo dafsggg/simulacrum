@@ -430,10 +430,11 @@ window.Predictor = Predictor;
 /**
  * 全局更新预测入口
  * 
- * 由于部署在 Cloudflare Pages 上无后端，点击更新后会：
- * 1. 打开 GitHub Actions 手动触发页面
- * 2. 用户点击 Run workflow 触发更新（约10-15分钟）
- * 3. 页面会轮询检查更新状态
+ * 流程：
+ * 1. 调用 /api/refresh 获取 GitHub Actions 触发链接
+ * 2. 打开 GitHub Actions 页面
+ * 3. 用户点击 Run workflow 触发更新
+ * 4. 页面自动轮询检查更新状态，完成后自动刷新
  */
 window.updatePredictions = async function () {
   const btn = document.getElementById("update-btn");
@@ -457,9 +458,9 @@ window.updatePredictions = async function () {
     if (btnLabel) btnLabel.textContent = msg || "更新预测";
   };
 
-  setProgress("正在触发更新...");
+  setProgress("正在准备更新...");
 
-  // 尝试通过 Cloudflare Pages Function 触发 GitHub Actions
+  // 调用 API 获取触发链接
   try {
     const response = await fetch('/api/refresh', {
       method: 'POST',
@@ -468,85 +469,43 @@ window.updatePredictions = async function () {
 
     if (response.ok) {
       const data = await response.json();
-      if (data.status === 'success') {
-        setProgress("更新已触发！请等待 10-15 分钟...");
+      
+      if (data.trigger_url) {
+        setProgress("正在打开更新页面...");
+        // 在新窗口打开 GitHub Actions 页面
+        const githubWindow = window.open(data.trigger_url, '_blank');
+        
+        if (!githubWindow || githubWindow.closed || typeof githubWindow.closed === 'undefined') {
+          // 弹窗被阻止，显示提示
+          setProgress("请允许弹窗后重试，或手动访问 GitHub");
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.classList.remove("busy");
+          }, 3000);
+          return;
+        }
+        
+        setProgress("请在打开的页面点击 'Run workflow'");
+        
         // 开始轮询检查更新状态
-        await pollForCompletion(setProgress);
+        await pollForManualCompletion(setProgress);
         return;
       }
     }
   } catch (e) {
-    console.log('API trigger failed, falling back to manual trigger:', e.message);
+    console.log('API call failed:', e.message);
   }
 
-  // 降级方案：引导用户手动触发
-  setProgress("准备打开更新页面...");
-  await new Promise(r => setTimeout(r, 1000));
-  
+  // 如果 API 调用失败，直接打开 GitHub 页面
   const githubUrl = 'https://github.com/dafsggg/simulacrum/actions/workflows/auto-update.yml';
   window.open(githubUrl, '_blank');
-  
-  setProgress("请在 GitHub 页面点击 'Run workflow'，然后返回此处");
-  
-  // 开始轮询检查是否有新数据
+  setProgress("请在 GitHub 页面点击 'Run workflow'");
   await pollForManualCompletion(setProgress);
 };
 
 /**
- * 轮询检查更新是否完成（自动触发模式）
- */
-async function pollForCompletion(setProgress) {
-  const maxAttempts = 60; // 最多轮询 10 分钟（每次 10 秒）
-  let attempts = 0;
-  
-  while (attempts < maxAttempts) {
-    attempts++;
-    setProgress(`正在检查更新进度... (${attempts}/${maxAttempts})`);
-    
-    try {
-      // 检查最新的 workflow run
-      const response = await fetch(
-        'https://api.github.com/repos/dafsggg/simulacrum/actions/runs?per_page=1',
-        {
-          headers: { 'Accept': 'application/vnd.github.v3+json' }
-        }
-      );
-      
-      if (response.ok) {
-        const data = await response.json();
-        if (data.workflow_runs && data.workflow_runs.length > 0) {
-          const latestRun = data.workflow_runs[0];
-          
-          if (latestRun.conclusion === 'success') {
-            setProgress("更新完成！正在刷新页面...");
-            // 延迟 2 秒让用户看到完成消息
-            await new Promise(r => setTimeout(r, 2000));
-            // 强制刷新页面获取最新数据
-            window.location.reload();
-            return;
-          } else if (latestRun.conclusion === 'failure') {
-            setProgress("更新失败，请稍后重试");
-            setTimeout(() => {
-              location.reload();
-            }, 3000);
-            return;
-          } else if (latestRun.status === 'in_progress' || latestRun.status === 'queued') {
-            setProgress(`更新进行中... (${Math.round(attempts/maxAttempts*100)}%)`);
-          }
-        }
-      }
-    } catch (e) {
-      console.log('Polling error:', e);
-    }
-    
-    await new Promise(r => setTimeout(r, 10000)); // 每 10 秒检查一次
-  }
-  
-  setProgress("更新可能需要更长时间，请手动检查 GitHub Actions");
-}
-
-/**
  * 轮询检查更新是否完成（手动触发模式）
+ * 每 10 秒检查一次 GitHub Actions 的最新运行状态
  */
 async function pollForManualCompletion(setProgress) {
   const maxAttempts = 120; // 最多轮询 20 分钟
@@ -554,7 +513,8 @@ async function pollForManualCompletion(setProgress) {
   
   while (attempts < maxAttempts) {
     attempts++;
-    setProgress(`等待更新完成... (${Math.round(attempts/maxAttempts*100)}%)`);
+    const percent = Math.round(attempts/maxAttempts*100);
+    setProgress(`等待更新完成... (${percent}%)`);
     
     try {
       // 获取最新的 workflow run
