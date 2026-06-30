@@ -36,19 +36,15 @@ jobs:
           ls -la web/predictor-data.js
           ls -la web/data.js
           
-      - name: Commit and push if changes
+      - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
           if ! git diff --quiet || ! git diff --staged --quiet; then
             git commit -m "Auto update predictions $(date +'%Y-%m-%d %H:%M')" || true
-            git push || echo "Push skipped (no changes or remote rejection)"
+            git push
+            echo "Changes pushed successfully. Cloudflare Pages will auto-deploy."
+          else
+            echo "No changes to commit."
           fi
-          
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy cup2026predictor/web --project-name=simulacrum
