@@ -32,6 +32,9 @@ jobs:
         run: |
           cd cup2026predictor
           python -m src.update --sims 300000 --workers 1
+          echo "Checking generated files..."
+          ls -la web/predictor-data.js
+          ls -la web/data.js
           
       - name: Commit and push if changes
         run: |
