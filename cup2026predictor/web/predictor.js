@@ -428,9 +428,12 @@ const Predictor = (function () {
 window.Predictor = Predictor;
 
 /**
- * 全局更新预测入口，供各语言版本 index.html 的按钮调用。
- * 优先调用后端 API 联网拉取最新赛果/赔率并重新计算，
- * API 不可用时降级为纯前端本地计算。
+ * 全局更新预测入口
+ * 
+ * 由于部署在 Cloudflare Pages 上无后端，点击更新后会：
+ * 1. 打开 GitHub Actions 手动触发页面
+ * 2. 用户点击 Run workflow 触发更新（约10-15分钟）
+ * 3. 页面会轮询检查更新状态
  */
 window.updatePredictions = async function () {
   const btn = document.getElementById("update-btn");
@@ -447,136 +450,146 @@ window.updatePredictions = async function () {
 
   btn.disabled = true;
   btn.classList.add("busy");
-
-  const progressEl = document.getElementById("update-progress");
   const btnLabel = btn.querySelector("span");
+  const progressEl = document.getElementById("update-progress");
   const setProgress = (msg) => {
     if (progressEl) progressEl.textContent = msg;
     if (btnLabel) btnLabel.textContent = msg || "更新预测";
   };
 
-  // ── 尝试调用后端 API 联网刷新（带重试）───────────────────────
+  setProgress("正在触发更新...");
+
+  // 尝试通过 Cloudflare Pages Function 触发 GitHub Actions
   try {
-    setProgress("正在连接后端服务...");
-    const apiUrl = "/api/refresh";
+    const response = await fetch('/api/refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
 
-    // 重试 2 次，每次间隔 1 秒
-    let resp = null;
-    let lastErr = null;
-    for (let attempt = 0; attempt < 3; attempt++) {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
-        resp = await fetch(apiUrl, {
-          method: "POST",
-          signal: controller.signal,
-          headers: { "Content-Type": "application/json" }
-        });
-        clearTimeout(timeoutId);
-        break;
-      } catch (e) {
-        lastErr = e;
-        if (attempt < 2) {
-          setProgress(`连接后端失败，重试中（${attempt + 1}/3）...`);
-          await new Promise(r => setTimeout(r, 1500));
-        }
-      }
-    }
-
-    if (!resp) throw lastErr || new Error("无法连接后端");
-
-    if (resp.ok || resp.status === 409) {
-      if (resp.status === 409) {
-        setProgress("后端正在刷新中，请稍候...");
-      } else {
-        setProgress("后端联网刷新中（约3~5分钟）...");
-      }
-      await _pollApiRefresh(() => {
-        setProgress("后端正在计算，请稍候...");
-      });
-
-      // 拉取最新数据
-      const latestResp = await fetch("/api/latest", {
-        signal: AbortSignal.timeout(8000)
-      });
-      if (latestResp.ok) {
-        const newData = await latestResp.json();
-        // 替换内存中的数据
-        Object.assign(window.WC_DATA, newData);
-
-        // 触发页面重渲染
-        if (typeof window.renderSchedule === "function") window.renderSchedule();
-        if (typeof window.renderReports === "function") window.renderReports();
-
-        setProgress("联网刷新完成（30万次模拟）");
-        btn.disabled = false;
-        btn.classList.remove("busy");
+    if (response.ok) {
+      const data = await response.json();
+      if (data.status === 'success') {
+        setProgress("更新已触发！请等待 10-15 分钟...");
+        // 开始轮询检查更新状态
+        await pollForCompletion(setProgress);
         return;
       }
     }
-    // API 返回非 200 且非 409
-    throw new Error("API 返回错误: " + resp.status);
   } catch (e) {
-    // API 不可用时，提示用户而不是默默降级
-    const useLocal = confirm(
-      "后端服务连接失败！\n\n" +
-      "请确认程序已启动后再试。\n\n" +
-      "点击【确定】使用本地快速计算（仅重新计算比分预测，不更新赛程/赔率，不跑锦标赛模拟）\n" +
-      "点击【取消】放弃更新"
-    );
-    if (!useLocal) {
-      btn.disabled = false;
-      btn.classList.remove("busy");
-      setProgress("已取消");
-      return;
-    }
-    setProgress("本地计算中...");
+    console.log('API trigger failed, falling back to manual trigger:', e.message);
   }
 
-  // ── 降级：纯前端本地计算 ───────────────────────────────────
-  try {
-    await Predictor.loadData();
-  } catch (e) {
-    alert("加载预测数据失败: " + (e && e.message || e));
-    btn.disabled = false;
-    btn.classList.remove("busy");
-    return;
-  }
-
-  Predictor.runPredictions({
-    schedule: D.schedule,
-    limit: 10,
-    onProgress: (done, total, msg) => setProgress(msg),
-    onDone: (results, review) => {
-      setProgress("更新完成，正在重渲染...");
-      // 更新元信息
-      D.meta.updated_at = new Date().toISOString().replace("T", " ").slice(0, 19);
-
-      // 触发挥程表重新渲染（如果页面提供 renderSchedule）
-      if (typeof window.renderSchedule === "function") {
-        window.renderSchedule();
-      }
-      // 触发战报/复盘重新渲染（如果页面提供 renderReports）
-      if (typeof window.renderReports === "function") {
-        window.renderReports(review);
-      }
-
-      setProgress(`已刷新 ${results.length} 场预测`);
-      btn.disabled = false;
-      btn.classList.remove("busy");
-
-      // 如果页面没有 renderReports，把复盘内容放到控制台
-      if (typeof window.renderReports !== "function") {
-        console.log("AI 复盘:\n" + review);
-      }
-    },
-    onError: (msg) => {
-      alert("更新预测失败: " + msg);
-      btn.disabled = false;
-      btn.classList.remove("busy");
-    }
-  });
+  // 降级方案：引导用户手动触发
+  setProgress("准备打开更新页面...");
+  await new Promise(r => setTimeout(r, 1000));
+  
+  const githubUrl = 'https://github.com/dafsggg/simulacrum/actions/workflows/auto-update.yml';
+  window.open(githubUrl, '_blank');
+  
+  setProgress("请在 GitHub 页面点击 'Run workflow'，然后返回此处");
+  
+  // 开始轮询检查是否有新数据
+  await pollForManualCompletion(setProgress);
 };
+
+/**
+ * 轮询检查更新是否完成（自动触发模式）
+ */
+async function pollForCompletion(setProgress) {
+  const maxAttempts = 60; // 最多轮询 10 分钟（每次 10 秒）
+  let attempts = 0;
+  
+  while (attempts < maxAttempts) {
+    attempts++;
+    setProgress(`正在检查更新进度... (${attempts}/${maxAttempts})`);
+    
+    try {
+      // 检查最新的 workflow run
+      const response = await fetch(
+        'https://api.github.com/repos/dafsggg/simulacrum/actions/runs?per_page=1',
+        {
+          headers: { 'Accept': 'application/vnd.github.v3+json' }
+        }
+      );
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.workflow_runs && data.workflow_runs.length > 0) {
+          const latestRun = data.workflow_runs[0];
+          
+          if (latestRun.conclusion === 'success') {
+            setProgress("更新完成！正在刷新页面...");
+            // 延迟 2 秒让用户看到完成消息
+            await new Promise(r => setTimeout(r, 2000));
+            // 强制刷新页面获取最新数据
+            window.location.reload();
+            return;
+          } else if (latestRun.conclusion === 'failure') {
+            setProgress("更新失败，请稍后重试");
+            setTimeout(() => {
+              location.reload();
+            }, 3000);
+            return;
+          } else if (latestRun.status === 'in_progress' || latestRun.status === 'queued') {
+            setProgress(`更新进行中... (${Math.round(attempts/maxAttempts*100)}%)`);
+          }
+        }
+      }
+    } catch (e) {
+      console.log('Polling error:', e);
+    }
+    
+    await new Promise(r => setTimeout(r, 10000)); // 每 10 秒检查一次
+  }
+  
+  setProgress("更新可能需要更长时间，请手动检查 GitHub Actions");
+}
+
+/**
+ * 轮询检查更新是否完成（手动触发模式）
+ */
+async function pollForManualCompletion(setProgress) {
+  const maxAttempts = 120; // 最多轮询 20 分钟
+  let attempts = 0;
+  
+  while (attempts < maxAttempts) {
+    attempts++;
+    setProgress(`等待更新完成... (${Math.round(attempts/maxAttempts*100)}%)`);
+    
+    try {
+      // 获取最新的 workflow run
+      const response = await fetch(
+        'https://api.github.com/repos/dafsggg/simulacrum/actions/runs?per_page=1',
+        {
+          headers: { 'Accept': 'application/vnd.github.v3+json' }
+        }
+      );
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.workflow_runs && data.workflow_runs.length > 0) {
+          const latestRun = data.workflow_runs[0];
+          
+          if (latestRun.conclusion === 'success') {
+            setProgress("更新完成！正在刷新页面...");
+            await new Promise(r => setTimeout(r, 2000));
+            window.location.reload();
+            return;
+          } else if (latestRun.conclusion === 'failure') {
+            setProgress("更新失败，请查看 GitHub Actions");
+            return;
+          }
+        }
+      }
+    } catch (e) {
+      console.log('Polling error:', e);
+    }
+    
+    await new Promise(r => setTimeout(r, 10000));
+  }
+  
+  setProgress("更新超时，请手动刷新页面或检查 GitHub Actions");
+}
 
 /**
  * 轮询 /api/status，等待后端刷新完成（返回非 refreshing），
