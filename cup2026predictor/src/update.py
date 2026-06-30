@@ -284,6 +284,10 @@ def write_outputs(payload: dict) -> None:
     (ROOT / "web" / "data.js").write_text(
         "window.WC_DATA = " + json.dumps(payload, ensure_ascii=False) + ";\n",
         encoding="utf-8")
+    # Also generate predictor-data.js for frontend compatibility
+    (ROOT / "web" / "predictor-data.js").write_text(
+        "window.WC_DATA = " + json.dumps(payload, ensure_ascii=False) + ";\n",
+        encoding="utf-8")
 
 
 def print_report(payload: dict) -> None:
