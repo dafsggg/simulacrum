@@ -41,13 +41,13 @@ jobs:
             cat > data/config.json <<EOF
 {
   "llm": {
-    "base_url": "${LLM_BASE_URL:-https://api.deepseek.com/v1}",
+    "base_url": "${LLM_BASE_URL:-https://apihub.agnes-ai.com/v1}",
     "api_key": "${LLM_API_KEY}",
-    "model": "${LLM_MODEL:-deepseek-chat}"
+    "model": "${LLM_MODEL:-agnes-2.0-flash}"
   }
 }
 EOF
-            echo "LLM config written successfully (model: ${LLM_MODEL:-deepseek-chat})"
+            echo "LLM config written successfully (model: ${LLM_MODEL:-agnes-2.0-flash})"
           else
             echo "WARNING: No LLM_API_KEY secret found, AI blurbs will not be generated"
           fi
