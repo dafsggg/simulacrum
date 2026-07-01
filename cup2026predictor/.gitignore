@@ -8,7 +8,6 @@ data/locked_preds.json
 data/intl_results.csv
 web/data.js
 web/reports.js
-web/blurbs.js
 out/
 
 # 本地杂项
