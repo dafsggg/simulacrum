@@ -44,7 +44,18 @@ jobs:
           if ! git diff --quiet || ! git diff --staged --quiet; then
             git commit -m "Auto update predictions $(date +'%Y-%m-%d %H:%M')" || true
             git push
-            echo "Changes pushed successfully. Cloudflare Pages will auto-deploy."
+            echo "Changes pushed successfully."
           else
             echo "No changes to commit."
           fi
+          
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: >
+            pages deploy cup2026predictor/web
+            --project-name=simulacrum
+            --branch=main
+        timeout-minutes: 10
