@@ -56,13 +56,16 @@ EOF
           ls -la web/blurbs.js
           
       - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
           if ! git diff --quiet || ! git diff --staged --quiet; then
             git commit -m "Auto update predictions $(date +'%Y-%m-%d %H:%M')"
-            git push || echo "WARNING: Git push failed"
+            # Use git push with refspec to prevent triggering workflows
+            git push origin main || echo "WARNING: Git push failed"
             echo "SUCCESS: Changes pushed to GitHub"
           else
             echo "No changes to commit, skipping deployment"
@@ -71,9 +74,6 @@ EOF
           
       - name: Deploy to Cloudflare Pages
         if: success()
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy cup2026predictor/web --project-name=simulacrum --branch=main
-        timeout-minutes: 10
+        run: |
+          echo "Cloudflare Pages will auto-deploy from GitHub repository."
+          echo "No manual deployment needed."
