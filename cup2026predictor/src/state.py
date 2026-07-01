@@ -24,7 +24,7 @@ from . import bookmaker, group_control
 from ._paths import ROOT
 LOCKED_PATH = ROOT / "data" / "locked_preds.json"
 PLAYED_PREDS_PATH = ROOT / "data" / "played_preds.json"  # 已赛预测固定存档
-MODEL_WEIGHT = 0.7   # 融合权重：模型 0.7 + 市场 0.3
+MODEL_WEIGHT = 0.5   # 融合权重：模型 0.5 + 市场 0.5
 
 
 OPEN_UPDATE_K = 0.08          # 赛中开放度学习率
