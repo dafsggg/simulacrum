@@ -51,13 +51,15 @@ EOF
           else
             echo "WARNING: No LLM_API_KEY secret found, AI blurbs will not be generated"
           fi
-          python -m src.update --sims 300000 --workers 1
+          python -m src.update --sims 300000 --workers 1 2>&1 | tee update.log
           echo "Checking generated files..."
           ls -la web/predictor-data.js
           ls -la web/data.js
           ls -la web/blurbs.js
           echo "Blurbs count:"
           grep -c '"text"' web/blurbs.js || echo "0"
+          echo "--- Report module logs ---"
+          grep -E '\[report\]|LLM|blurb|看点|AI' update.log || echo "No report logs found"
           
       - name: Commit and push changes
         env:
