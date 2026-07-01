@@ -63,7 +63,7 @@ EOF
           git config --local user.name "GitHub Action"
           git add -A
           if ! git diff --quiet || ! git diff --staged --quiet; then
-            git commit -m "Auto update predictions $(date +'%Y-%m-%d %H:%M')"
+            git commit -m "Auto update predictions $(date +'%Y-%m-%d %H:%M') [skip ci]"
             # Retry git push up to 3 times
             for i in 1 2 3; do
               if git push origin main; then
