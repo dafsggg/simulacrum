@@ -47,13 +47,17 @@ jobs:
   }
 }
 EOF
-            echo "LLM config written successfully"
+            echo "LLM config written successfully (model: ${LLM_MODEL:-deepseek-chat})"
+          else
+            echo "WARNING: No LLM_API_KEY secret found, AI blurbs will not be generated"
           fi
           python -m src.update --sims 300000 --workers 1
           echo "Checking generated files..."
           ls -la web/predictor-data.js
           ls -la web/data.js
           ls -la web/blurbs.js
+          echo "Blurbs count:"
+          grep -c '"text"' web/blurbs.js || echo "0"
           
       - name: Commit and push changes
         env:
