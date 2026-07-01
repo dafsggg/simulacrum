@@ -29,12 +29,31 @@ jobs:
           pip install beautifulsoup4 lxml
           
       - name: Run prediction update
+        env:
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
         run: |
           cd cup2026predictor
+          # Generate config.json from secrets if available
+          if [ -n "$LLM_API_KEY" ]; then
+            mkdir -p data
+            cat > data/config.json <<EOF
+{
+  "llm": {
+    "base_url": "${LLM_BASE_URL:-https://api.deepseek.com/v1}",
+    "api_key": "${LLM_API_KEY}",
+    "model": "${LLM_MODEL:-deepseek-chat}"
+  }
+}
+EOF
+            echo "LLM config written successfully"
+          fi
           python -m src.update --sims 300000 --workers 1
           echo "Checking generated files..."
           ls -la web/predictor-data.js
           ls -la web/data.js
+          ls -la web/blurbs.js
           
       - name: Commit and push changes
         run: |
