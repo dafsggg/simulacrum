@@ -74,6 +74,9 @@ EOF
           
       - name: Deploy to Cloudflare Pages
         if: success()
-        run: |
-          echo "Cloudflare Pages will auto-deploy from GitHub repository."
-          echo "No manual deployment needed."
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy cup2026predictor/web --project-name=simulacrum --branch=main
+        timeout-minutes: 10
