@@ -64,12 +64,17 @@ EOF
           git add -A
           if ! git diff --quiet || ! git diff --staged --quiet; then
             git commit -m "Auto update predictions $(date +'%Y-%m-%d %H:%M')"
-            # Use git push with refspec to prevent triggering workflows
-            git push origin main || echo "WARNING: Git push failed"
-            echo "SUCCESS: Changes pushed to GitHub"
+            # Retry git push up to 3 times
+            for i in 1 2 3; do
+              if git push origin main; then
+                echo "SUCCESS: Changes pushed to GitHub"
+                break
+              fi
+              echo "Push attempt $i failed, retrying..."
+              sleep 5
+            done
           else
             echo "No changes to commit, skipping deployment"
-            exit 0
           fi
           
       - name: Deploy to Cloudflare Pages
