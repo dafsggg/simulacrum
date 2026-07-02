@@ -122,11 +122,10 @@ def run_simulations(state: dict, sims: int, seed: int, workers: int) -> dict:
         live = state["live_tables"][team["group"]][code]
         market_p = market_winner.get(code, 0)
         sim_p = agg["counts"][code]["champion"] / sims
-        # 融合博彩市场赔率和模拟概率，权重由庄家思维知识库校准
-        # 如果市场赔率存在，给予更高权重（反映真实市场信息）
+        # 博彩市场赔率需要通过庄家思维知识库分析后才能使用
+        # 如果市场数据存在，按50%模拟 + 50%市场分析融合
         if market_p and market_p > 0:
-            # 庄家思维已通过 effective_elo 融入模拟，这里给市场数据更多权重
-            blended_p = sim_p * 0.3 + market_p * 0.7
+            blended_p = sim_p * 0.5 + market_p * 0.5
         else:
             blended_p = sim_p
         entry = {
