@@ -1330,14 +1330,17 @@
   "round": 4,
   "stage": "r32",
   "group": null,
-  "date_utc": "2026-07-01 01:00:00Z",
+  "date_utc": "2026-07-01 02:00:00Z",
   "venue": "Mexico City Stadium",
   "home": "MEX",
   "away": "ECU",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   2,
+   0
+  ],
+  "winner": "MEX"
  },
  {
   "match": 80,
@@ -1350,8 +1353,11 @@
   "away": "COD",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   2,
+   1
+  ],
+  "winner": "ENG"
  },
  {
   "match": 81,
@@ -1364,8 +1370,11 @@
   "away": "BIH",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   2,
+   0
+  ],
+  "winner": "USA"
  },
  {
   "match": 82,
@@ -1378,8 +1387,11 @@
   "away": "SEN",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   3,
+   2
+  ],
+  "winner": "BEL"
  },
  {
   "match": 83,
@@ -1514,8 +1526,8 @@
   "group": null,
   "date_utc": "2026-07-06 00:00:00Z",
   "venue": "Mexico City Stadium",
-  "home": null,
-  "away": null,
+  "home": "MEX",
+  "away": "ENG",
   "slot_home": null,
   "slot_away": null,
   "score": null,
@@ -1542,8 +1554,8 @@
   "group": null,
   "date_utc": "2026-07-07 00:00:00Z",
   "venue": "Seattle Stadium",
-  "home": null,
-  "away": null,
+  "home": "USA",
+  "away": "BEL",
   "slot_home": null,
   "slot_away": null,
   "score": null,
