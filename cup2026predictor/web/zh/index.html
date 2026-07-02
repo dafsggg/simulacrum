@@ -967,7 +967,7 @@
 
   /* ===== 总览：概率榜 ===== */
   const STAGE_DEF = [["p_r32","32强"],["p_r16","16强"],["p_qf","8强"],["p_sf","4强"],["p_final","决赛"],["p_champion","夺冠"]];
-  const maxP = D.teams[0].p_champion || 1;
+  const maxP = D.teams[0].p_champion_blended || D.teams[0].p_champion || 1;
   const boardEl = document.getElementById("board-rows");
   let showAll = false;
   function renderBoard() {
@@ -981,8 +981,8 @@
           <span class="nm">${esc(t.name_zh)}</span>
           ${t.host ? '<span class="tag">东道主</span>' : ""}
           <span class="elo">${Math.round(t.elo)}${d ? ` <b>(${d > 0 ? "+" : ""}${d})</b>` : ""}</span></span>
-        <span class="bar-track"><span class="bar-fill" data-w="${(t.p_champion / maxP * 100).toFixed(1)}"></span></span>
-        <span class="pct">${pct(t.p_champion)}</span>
+        <span class="bar-track"><span class="bar-fill" data-w="${((t.p_champion_blended || t.p_champion) / maxP * 100).toFixed(1)}"></span></span>
+        <span class="pct">${pct(t.p_champion_blended || t.p_champion)}</span>
       </div>
       <div class="funnel" id="funnel-${t.code}">
         ${STAGE_DEF.map(([k, label]) => `
