@@ -9,6 +9,7 @@ on:
     paths:
       - '.github/workflows/auto-update.yml'
       - 'cup2026predictor/src/**'
+      - 'cup2026predictor/web/**'
 
 permissions:
   contents: write
