@@ -6,7 +6,6 @@ data/locked_preds.json
 
 # 自动下载/生成的产物
 data/intl_results.csv
-web/data.js
 web/reports.js
 out/
 
