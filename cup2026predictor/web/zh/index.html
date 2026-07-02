@@ -961,7 +961,7 @@
       <div class="podium-rank">${medals[i]}</div>
       <div class="podium-team"><span class="podium-flag">${FLAG[t.code] || ""}</span>
         <span class="podium-name">${esc(t.name_zh)}</span></div>
-      <div class="podium-pct">${pct(t.p_champion)}</div>
+      <div class="podium-pct">${pct(t.p_champion_blended || t.p_champion)}</div>
       <div class="podium-label">夺冠概率 · ELO ${Math.round(t.elo)}</div>
     </div>`).join("");
 
