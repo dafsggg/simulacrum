@@ -120,8 +120,17 @@ def run_simulations(state: dict, sims: int, seed: int, workers: int) -> dict:
     teams_out = []
     for code, team in by_code.items():
         live = state["live_tables"][team["group"]][code]
+        market_p = market_winner.get(code, 0)
+        sim_p = agg["counts"][code]["champion"] / sims
+        # 融合博彩市场赔率和模拟概率，权重由庄家思维知识库校准
+        # 如果市场赔率存在，给予更高权重（反映真实市场信息）
+        if market_p and market_p > 0:
+            # 庄家思维已通过 effective_elo 融入模拟，这里给市场数据更多权重
+            blended_p = sim_p * 0.3 + market_p * 0.7
+        else:
+            blended_p = sim_p
         entry = {
-            "p_champion_market": market_winner.get(code),
+            "p_champion_market": market_p,
             "code": code, "name_zh": team["name_zh"], "name_en": team["name_en"],
             "group": team["group"], "host": team["host"],
             "elo_base": round(team["elo_base"], 1),
@@ -129,11 +138,12 @@ def run_simulations(state: dict, sims: int, seed: int, workers: int) -> dict:
             "exp_group_pts": round(agg["group_pts"][code] / sims, 2),
             "p_group_win": round(agg["group_rank"][code][1] / sims, 6),
             "live": live,
+            "p_champion_blended": round(blended_p, 6),
         }
         for stage in STAGES:
             entry["p_" + stage] = round(agg["counts"][code][stage] / sims, 6)
         teams_out.append(entry)
-    teams_out.sort(key=lambda t: (-t["elo"], -t["p_champion"], -t["p_final"]))
+    teams_out.sort(key=lambda t: (-t["elo"], -t["p_champion_blended"], -t["p_final"]))
 
     return {
         "teams": teams_out,
