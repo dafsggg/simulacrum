@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '0 4 * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/auto-update.yml'
+      - 'cup2026predictor/src/**'
 
 permissions:
   contents: write
@@ -11,23 +16,20 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-          
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-          
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install beautifulsoup4 lxml
-          
+
       - name: Run prediction update
         env:
           LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
@@ -35,59 +37,33 @@ jobs:
           LLM_MODEL: ${{ secrets.LLM_MODEL }}
         run: |
           cd cup2026predictor
-          # Generate config.json from secrets if available
           if [ -n "$LLM_API_KEY" ]; then
             mkdir -p data
-            cat > data/config.json <<EOF
-{
-  "llm": {
-    "base_url": "${LLM_BASE_URL:-https://apihub.agnes-ai.com/v1}",
-    "api_key": "${LLM_API_KEY}",
-    "model": "${LLM_MODEL:-agnes-2.0-flash}"
-  }
-}
-EOF
-            echo "LLM config written successfully (model: ${LLM_MODEL:-agnes-2.0-flash})"
+            echo '{"llm":{"base_url":"'${LLM_BASE_URL:-https://apihub.agnes-ai.com/v1}'","api_key":"'${LLM_API_KEY}'","model":"'${LLM_MODEL:-agnes-2.0-flash}'"}}' > data/config.json
+            echo "LLM config written successfully"
           else
             echo "WARNING: No LLM_API_KEY secret found, AI blurbs will not be generated"
           fi
-          python -m src.update --sims 300000 --workers 1 2>&1 | tee update.log
-          echo "Checking generated files..."
-          ls -la web/predictor-data.js
-          ls -la web/data.js
-          ls -la web/blurbs.js
-          echo "Blurbs count:"
-          grep -c '"text"' web/blurbs.js || echo "0"
-          echo "--- Report module logs ---"
-          grep -E '\[report\]|LLM|blurb|看点|AI' update.log || echo "No report logs found"
-          
+          python -m src.update --sims 300000 --workers 1
+          echo "Files generated:"
+          ls -la web/predictor-data.js web/data.js web/blurbs.js
+
       - name: Commit and push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
           if ! git diff --quiet || ! git diff --staged --quiet; then
             git commit -m "Auto update predictions $(date +'%Y-%m-%d %H:%M') [skip ci]"
-            # Retry git push up to 3 times
-            for i in 1 2 3; do
-              if git push origin main; then
-                echo "SUCCESS: Changes pushed to GitHub"
-                break
-              fi
-              echo "Push attempt $i failed, retrying..."
-              sleep 5
-            done
+            git push origin main
+            echo "Changes pushed successfully"
           else
-            echo "No changes to commit, skipping deployment"
+            echo "No changes to commit"
           fi
-          
+
       - name: Deploy to Cloudflare Pages
-        if: success()
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy cup2026predictor/web --project-name=simulacrum --branch=main
-        timeout-minutes: 10
+          command: pages deploy cup2026predictor/web --project-name=simulacrum
