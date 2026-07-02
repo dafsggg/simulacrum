@@ -133,7 +133,7 @@ def run_simulations(state: dict, sims: int, seed: int, workers: int) -> dict:
         for stage in STAGES:
             entry["p_" + stage] = round(agg["counts"][code][stage] / sims, 6)
         teams_out.append(entry)
-    teams_out.sort(key=lambda t: (-t["p_champion"], -t["p_final"], -t["elo"]))
+    teams_out.sort(key=lambda t: (-t["elo"], -t["p_champion"], -t["p_final"]))
 
     return {
         "teams": teams_out,
