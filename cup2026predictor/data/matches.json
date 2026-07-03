@@ -1404,8 +1404,11 @@
   "away": "CRO",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   2,
+   1
+  ],
+  "winner": "POR"
  },
  {
   "match": 84,
@@ -1418,8 +1421,11 @@
   "away": "AUT",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   3,
+   0
+  ],
+  "winner": "ESP"
  },
  {
   "match": 85,
@@ -1432,8 +1438,11 @@
   "away": "ALG",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   2,
+   0
+  ],
+  "winner": "SUI"
  },
  {
   "match": 86,
@@ -1540,8 +1549,8 @@
   "group": null,
   "date_utc": "2026-07-06 19:00:00Z",
   "venue": "Dallas Stadium",
-  "home": null,
-  "away": null,
+  "home": "POR",
+  "away": "ESP",
   "slot_home": null,
   "slot_away": null,
   "score": null,
@@ -1582,7 +1591,7 @@
   "group": null,
   "date_utc": "2026-07-07 20:00:00Z",
   "venue": "BC Place Vancouver",
-  "home": null,
+  "home": "SUI",
   "away": null,
   "slot_home": null,
   "slot_away": null,
