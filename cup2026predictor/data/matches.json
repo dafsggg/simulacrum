@@ -1455,8 +1455,11 @@
   "away": "CPV",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   3,
+   2
+  ],
+  "winner": "ARG"
  },
  {
   "match": 87,
@@ -1469,8 +1472,11 @@
   "away": "GHA",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   1,
+   0
+  ],
+  "winner": "COL"
  },
  {
   "match": 88,
@@ -1483,8 +1489,11 @@
   "away": "EGY",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   1,
+   1
+  ],
+  "winner": "EGY"
  },
  {
   "match": 89,
@@ -1577,8 +1586,8 @@
   "group": null,
   "date_utc": "2026-07-07 16:00:00Z",
   "venue": "Atlanta Stadium",
-  "home": null,
-  "away": null,
+  "home": "ARG",
+  "away": "EGY",
   "slot_home": null,
   "slot_away": null,
   "score": null,
@@ -1592,7 +1601,7 @@
   "date_utc": "2026-07-07 20:00:00Z",
   "venue": "BC Place Vancouver",
   "home": "SUI",
-  "away": null,
+  "away": "COL",
   "slot_home": null,
   "slot_away": null,
   "score": null,
