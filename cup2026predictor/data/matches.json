@@ -1506,8 +1506,11 @@
   "away": "FRA",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   0,
+   1
+  ],
+  "winner": "FRA"
  },
  {
   "match": 90,
@@ -1520,8 +1523,11 @@
   "away": "MAR",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   0,
+   3
+  ],
+  "winner": "MAR"
  },
  {
   "match": 91,
@@ -1614,8 +1620,8 @@
   "group": null,
   "date_utc": "2026-07-09 20:00:00Z",
   "venue": "Boston Stadium",
-  "home": null,
-  "away": null,
+  "home": "FRA",
+  "away": "MAR",
   "slot_home": null,
   "slot_away": null,
   "score": null,
