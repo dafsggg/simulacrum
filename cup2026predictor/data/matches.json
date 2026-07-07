@@ -1574,8 +1574,11 @@
   "away": "ESP",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   0,
+   1
+  ],
+  "winner": "ESP"
  },
  {
   "match": 94,
@@ -1588,8 +1591,11 @@
   "away": "BEL",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   1,
+   4
+  ],
+  "winner": "BEL"
  },
  {
   "match": 95,
@@ -1640,8 +1646,8 @@
   "group": null,
   "date_utc": "2026-07-10 19:00:00Z",
   "venue": "Los Angeles Stadium",
-  "home": null,
-  "away": null,
+  "home": "ESP",
+  "away": "BEL",
   "slot_home": null,
   "slot_away": null,
   "score": null,
