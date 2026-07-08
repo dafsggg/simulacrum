@@ -1608,8 +1608,11 @@
   "away": "EGY",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   3,
+   2
+  ],
+  "winner": "ARG"
  },
  {
   "match": 96,
@@ -1622,8 +1625,11 @@
   "away": "COL",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   0,
+   0
+  ],
+  "winner": "SUI"
  },
  {
   "match": 97,
@@ -1674,8 +1680,8 @@
   "group": null,
   "date_utc": "2026-07-12 01:00:00Z",
   "venue": "Kansas City Stadium",
-  "home": null,
-  "away": null,
+  "home": "ARG",
+  "away": "SUI",
   "slot_home": null,
   "slot_away": null,
   "score": null,
