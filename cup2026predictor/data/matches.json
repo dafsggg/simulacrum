@@ -1642,8 +1642,11 @@
   "away": "MAR",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   2,
+   0
+  ],
+  "winner": "FRA"
  },
  {
   "match": 98,
@@ -1694,7 +1697,7 @@
   "group": null,
   "date_utc": "2026-07-14 19:00:00Z",
   "venue": "Dallas Stadium",
-  "home": null,
+  "home": "FRA",
   "away": null,
   "slot_home": null,
   "slot_away": null,
