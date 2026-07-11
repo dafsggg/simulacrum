@@ -1659,8 +1659,11 @@
   "away": "BEL",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   2,
+   1
+  ],
+  "winner": "ESP"
  },
  {
   "match": 99,
@@ -1698,7 +1701,7 @@
   "date_utc": "2026-07-14 19:00:00Z",
   "venue": "Dallas Stadium",
   "home": "FRA",
-  "away": null,
+  "away": "ESP",
   "slot_home": null,
   "slot_away": null,
   "score": null,
