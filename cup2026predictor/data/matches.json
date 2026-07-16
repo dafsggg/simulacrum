@@ -1727,8 +1727,11 @@
   "away": "ARG",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   1,
+   2
+  ],
+  "winner": "ARG"
  },
  {
   "match": 103,
@@ -1738,7 +1741,7 @@
   "date_utc": "2026-07-18 21:00:00Z",
   "venue": "Miami Stadium",
   "home": "FRA",
-  "away": null,
+  "away": "ENG",
   "slot_home": null,
   "slot_away": null,
   "score": null,
@@ -1752,7 +1755,7 @@
   "date_utc": "2026-07-19 19:00:00Z",
   "venue": "New York/New Jersey Stadium",
   "home": "ESP",
-  "away": null,
+  "away": "ARG",
   "slot_home": null,
   "slot_away": null,
   "score": null,
