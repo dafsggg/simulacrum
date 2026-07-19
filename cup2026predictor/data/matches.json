@@ -1744,8 +1744,11 @@
   "away": "ENG",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   4,
+   6
+  ],
+  "winner": "ENG"
  },
  {
   "match": 104,
