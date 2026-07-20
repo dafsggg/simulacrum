@@ -1761,7 +1761,10 @@
   "away": "ARG",
   "slot_home": null,
   "slot_away": null,
-  "score": null,
-  "winner": null
+  "score": [
+   1,
+   0
+  ],
+  "winner": "ESP"
  }
 ]
